@@ -1,0 +1,244 @@
+# karel_basic.py
+from karel.stanfordkarel import *
+
+def main():
+    move()
+    pick_beeper()
+    move()
+    turn_left()
+    move()
+    turn_right()
+    move()
+    put_beeper()
+    move()
+
+def turn_right():
+    """Turns Karel 90 degrees to the right."""
+    turn_left()
+    turn_left()
+    turn_left()
+
+if __name__ == '__main__':
+    main()
+
+##### karel_obstacles.py
+from karel.stanfordkarel import *
+
+def main():
+    """Karel jumps over 3 obstacles and places a beeper after each."""
+    move()
+    for i in range(3):
+        jump_obstacle()
+        put_beeper()
+    move()
+    move()
+
+def jump_obstacle():
+    """Navigates Karel safely over a single obstacle block."""
+    turn_left()
+    move()
+    for i in range(2):
+        turn_right()
+        move()
+    turn_left()
+
+def turn_right():
+    """Turns Karel 90 degrees to the right."""
+    for i in range(3):
+        turn_left()
+
+if __name__ == '__main__':
+    main()
+
+###### karel_archway.py
+from karel.stanfordkarel import *
+
+def main():
+    """Karel climbs up, passes over, and safely climbs down an archway."""
+    turn_left()
+    for i in range(3):
+        move()
+    next_column()
+    move_down()
+    turn_left()
+
+def next_column():
+    """Moves Karel horizontally across the top section of the archway."""
+    for i in range(3):
+        turn_left()
+    for i in range(3):
+        move()
+
+def move_down():
+    """Brings Karel downward back to the surface level."""
+    for i in range(3):
+        turn_left()
+    for i in range(3):
+        move()
+
+if __name__ == '__main__':
+    main()
+
+##### karel_rainbow.py
+from karel.stanfordkarel import *
+
+def main():
+    """Karel moves forward while painting the ground with rainbow colors."""
+    paint_corner('red')
+    move()
+    paint_corner('orange')
+    move()
+    paint_corner('yellow')
+    move()
+    paint_corner('green')
+    move()
+    paint_corner('blue')
+    move()
+
+if __name__ == '__main__':
+    main()
+
+####### karel_square.py
+from karel.stanfordkarel import *
+
+def main():
+    """
+    Makes Karel place beepers in a square (4 beepers total) 
+    and end in the exact same position Karel starts in.
+    """    
+    for i in range(4):
+        put_beeper()
+        move()
+        turn_left()
+
+if __name__ == '__main__':
+    main()
+
+# karel_2026.py
+from karel.stanfordkarel import *
+
+def main():
+    """
+    Karel places a pile of 20 beepers, moves forward, 
+    and then places another pile of 26 beepers.
+    """
+    for i in range(20):
+        put_beeper()
+    move()
+    for i in range(26):
+        put_beeper()
+    move()    
+
+if __name__ == '__main__':
+    main()
+
+# File: piles.py
+# pick up all the beepers in the world.
+from karel.stanfordkarel import *
+
+def main():
+    """Navigates through the world and picks up piles of 10 beepers each."""
+    while front_is_clear():
+        move()
+        pick_pile()
+
+def pick_pile():
+    """Picks up a stack of exactly 10 beepers from the current corner."""
+    for i in range(10):
+        if beepers_present():
+            pick_beeper()
+
+if __name__ == '__main__':
+    main()
+
+# File: invert_beeper.py
+
+from karel.stanfordkarel import *
+
+def main():
+    # invert beeper on each corner in the row
+    while front_is_clear():
+        invert_beeper()
+        move()
+    # fence-post bug correction
+    invert_beeper()
+
+def invert_beeper():
+    """ flips whether or not there is a beeper """
+    if beepers_present():
+        pick_beeper()
+    else:
+        put_beeper()
+
+if __name__ == '__main__':
+    main()
+
+# File: SteepleChaseKarel.py
+
+from karel.stanfordkarel import *
+
+def main():
+    """
+    To run a race that is 9 avenues long, we need to move
+    forward or jump hurdles 8 times. Let's use a for-loop for this!
+    """
+    for i in range(8):
+        if front_is_clear():  # If there is no hurdle to jump, move
+            move()
+        else:  # If there is a hurdle (the front is blocked)
+            jump_hurdle()
+
+def jump_hurdle():
+    """
+    Pre-condition:  Facing East at bottom of hurdle
+    Post-condition: Facing East at bottom in next avenue after hurdle
+    """
+    ascend_hurdle()
+    move()
+    descend_hurdle()
+
+def ascend_hurdle():
+    """
+    Pre-condition:  Facing East at bottom of hurdle
+    Post-condition: Facing East immediately above hurdle
+    """
+    turn_left()  # Face North
+    
+    # While there is a wall on the Eastern side of Karel, move up a row
+    while right_is_blocked():
+        move()
+        
+    turn_right()  # Face East
+
+
+def descend_hurdle():
+    """
+    Pre-condition:  Facing East above and immediately after hurdle
+    Post-condition: Facing East at bottom of hurdle
+    """
+    turn_right()  # Face South
+    move_to_wall()  # Move to row 1
+    turn_left()  # Face East
+
+
+def move_to_wall():
+    """
+    Pre-condition:  None
+    Post-condition: Facing first wall in whichever direction
+                    Karel was facing previously
+    """
+    while front_is_clear():
+        move()
+
+
+def turn_right():
+    """
+    Pre-condition:  None
+    Post-condition: Karel is facing to the right of whichever
+                    direction Karel was facing previously
+    """
+    for i in range(3):
+        turn_left()
+
+if __name__ == '__main__':
+    main()
